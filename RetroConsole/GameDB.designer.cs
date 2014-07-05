@@ -33,19 +33,19 @@ namespace RetroConsole
     partial void InsertPubDev(PubDev instance);
     partial void UpdatePubDev(PubDev instance);
     partial void DeletePubDev(PubDev instance);
-    partial void InsertPlatform(Platform instance);
-    partial void UpdatePlatform(Platform instance);
-    partial void DeletePlatform(Platform instance);
     partial void InsertGenre(Genre instance);
     partial void UpdateGenre(Genre instance);
     partial void DeleteGenre(Genre instance);
     partial void InsertGame(Game instance);
     partial void UpdateGame(Game instance);
     partial void DeleteGame(Game instance);
+    partial void InsertPlatform(Platform instance);
+    partial void UpdatePlatform(Platform instance);
+    partial void DeletePlatform(Platform instance);
     #endregion
 		
 		public GameDBDataContext() : 
-				base(global::RetroConsole.Properties.Settings.Default.GameDBConnectionString, mappingSource)
+				base(global::RetroConsole.Properties.Settings.Default.GameDBConnectionString1, mappingSource)
 		{
 			OnCreated();
 		}
@@ -82,14 +82,6 @@ namespace RetroConsole
 			}
 		}
 		
-		public System.Data.Linq.Table<Platform> Platforms
-		{
-			get
-			{
-				return this.GetTable<Platform>();
-			}
-		}
-		
 		public System.Data.Linq.Table<Genre> Genres
 		{
 			get
@@ -103,6 +95,14 @@ namespace RetroConsole
 			get
 			{
 				return this.GetTable<Game>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Platform> Platforms
+		{
+			get
+			{
+				return this.GetTable<Platform>();
 			}
 		}
 	}
@@ -246,144 +246,6 @@ namespace RetroConsole
 		{
 			this.SendPropertyChanging();
 			entity.Publisher = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Platforms")]
-	public partial class Platform : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _Id;
-		
-		private string _Name;
-		
-		private string _Filter;
-		
-		private EntitySet<Game> _Games;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnIdChanging(int value);
-    partial void OnIdChanged();
-    partial void OnNameChanging(string value);
-    partial void OnNameChanged();
-    partial void OnFilterChanging(string value);
-    partial void OnFilterChanged();
-    #endregion
-		
-		public Platform()
-		{
-			this._Games = new EntitySet<Game>(new Action<Game>(this.attach_Games), new Action<Game>(this.detach_Games));
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int Id
-		{
-			get
-			{
-				return this._Id;
-			}
-			set
-			{
-				if ((this._Id != value))
-				{
-					this.OnIdChanging(value);
-					this.SendPropertyChanging();
-					this._Id = value;
-					this.SendPropertyChanged("Id");
-					this.OnIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
-		public string Name
-		{
-			get
-			{
-				return this._Name;
-			}
-			set
-			{
-				if ((this._Name != value))
-				{
-					this.OnNameChanging(value);
-					this.SendPropertyChanging();
-					this._Name = value;
-					this.SendPropertyChanged("Name");
-					this.OnNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Filter", DbType="NVarChar(50)")]
-		public string Filter
-		{
-			get
-			{
-				return this._Filter;
-			}
-			set
-			{
-				if ((this._Filter != value))
-				{
-					this.OnFilterChanging(value);
-					this.SendPropertyChanging();
-					this._Filter = value;
-					this.SendPropertyChanged("Filter");
-					this.OnFilterChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Platform_Game", Storage="_Games", ThisKey="Id", OtherKey="PlatformID")]
-		public EntitySet<Game> Games
-		{
-			get
-			{
-				return this._Games;
-			}
-			set
-			{
-				this._Games.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_Games(Game entity)
-		{
-			this.SendPropertyChanging();
-			entity.Platform = this;
-		}
-		
-		private void detach_Games(Game entity)
-		{
-			this.SendPropertyChanging();
-			entity.Platform = null;
 		}
 	}
 	
@@ -531,11 +393,11 @@ namespace RetroConsole
 		
 		private EntityRef<Genre> _Genre;
 		
-		private EntityRef<Platform> _Platform;
-		
 		private EntityRef<PubDev> _Developer;
 		
 		private EntityRef<PubDev> _Publisher;
+		
+		private EntityRef<Platform> _Platform;
 		
     #region Extensibility Method Definitions
     partial void OnLoaded();
@@ -568,9 +430,9 @@ namespace RetroConsole
 		public Game()
 		{
 			this._Genre = default(EntityRef<Genre>);
-			this._Platform = default(EntityRef<Platform>);
 			this._Developer = default(EntityRef<PubDev>);
 			this._Publisher = default(EntityRef<PubDev>);
+			this._Platform = default(EntityRef<Platform>);
 			OnCreated();
 		}
 		
@@ -844,40 +706,6 @@ namespace RetroConsole
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Platform_Game", Storage="_Platform", ThisKey="PlatformID", OtherKey="Id", IsForeignKey=true)]
-		public Platform Platform
-		{
-			get
-			{
-				return this._Platform.Entity;
-			}
-			set
-			{
-				Platform previousValue = this._Platform.Entity;
-				if (((previousValue != value) 
-							|| (this._Platform.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Platform.Entity = null;
-						previousValue.Games.Remove(this);
-					}
-					this._Platform.Entity = value;
-					if ((value != null))
-					{
-						value.Games.Add(this);
-						this._PlatformID = value.Id;
-					}
-					else
-					{
-						this._PlatformID = default(int);
-					}
-					this.SendPropertyChanged("Platform");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="PubDev_Game", Storage="_Developer", ThisKey="DeveloperID", OtherKey="Id", IsForeignKey=true)]
 		public PubDev Developer
 		{
@@ -946,6 +774,40 @@ namespace RetroConsole
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Platform_Game", Storage="_Platform", ThisKey="PlatformID", OtherKey="Id", IsForeignKey=true)]
+		public Platform Platform
+		{
+			get
+			{
+				return this._Platform.Entity;
+			}
+			set
+			{
+				Platform previousValue = this._Platform.Entity;
+				if (((previousValue != value) 
+							|| (this._Platform.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Platform.Entity = null;
+						previousValue.Games.Remove(this);
+					}
+					this._Platform.Entity = value;
+					if ((value != null))
+					{
+						value.Games.Add(this);
+						this._PlatformID = value.Id;
+					}
+					else
+					{
+						this._PlatformID = default(int);
+					}
+					this.SendPropertyChanged("Platform");
+				}
+			}
+		}
+		
 		public event PropertyChangingEventHandler PropertyChanging;
 		
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -964,6 +826,168 @@ namespace RetroConsole
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Platforms")]
+	public partial class Platform : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _Id;
+		
+		private string _Name;
+		
+		private string _Filter;
+		
+		private string _EmulatorPath;
+		
+		private EntitySet<Game> _Games;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdChanging(int value);
+    partial void OnIdChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    partial void OnFilterChanging(string value);
+    partial void OnFilterChanged();
+    partial void OnEmulatorPathChanging(string value);
+    partial void OnEmulatorPathChanged();
+    #endregion
+		
+		public Platform()
+		{
+			this._Games = new EntitySet<Game>(new Action<Game>(this.attach_Games), new Action<Game>(this.detach_Games));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int Id
+		{
+			get
+			{
+				return this._Id;
+			}
+			set
+			{
+				if ((this._Id != value))
+				{
+					this.OnIdChanging(value);
+					this.SendPropertyChanging();
+					this._Id = value;
+					this.SendPropertyChanged("Id");
+					this.OnIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Filter", DbType="NVarChar(50)")]
+		public string Filter
+		{
+			get
+			{
+				return this._Filter;
+			}
+			set
+			{
+				if ((this._Filter != value))
+				{
+					this.OnFilterChanging(value);
+					this.SendPropertyChanging();
+					this._Filter = value;
+					this.SendPropertyChanged("Filter");
+					this.OnFilterChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmulatorPath", DbType="NVarChar(500) NOT NULL", CanBeNull=false)]
+		public string EmulatorPath
+		{
+			get
+			{
+				return this._EmulatorPath;
+			}
+			set
+			{
+				if ((this._EmulatorPath != value))
+				{
+					this.OnEmulatorPathChanging(value);
+					this.SendPropertyChanging();
+					this._EmulatorPath = value;
+					this.SendPropertyChanged("EmulatorPath");
+					this.OnEmulatorPathChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Platform_Game", Storage="_Games", ThisKey="Id", OtherKey="PlatformID")]
+		public EntitySet<Game> Games
+		{
+			get
+			{
+				return this._Games;
+			}
+			set
+			{
+				this._Games.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Games(Game entity)
+		{
+			this.SendPropertyChanging();
+			entity.Platform = this;
+		}
+		
+		private void detach_Games(Game entity)
+		{
+			this.SendPropertyChanging();
+			entity.Platform = null;
 		}
 	}
 }

@@ -47,19 +47,20 @@ namespace RetroConsole {
             }
             var platform = ((Tuple<string, string, int>)(cbPlatform.SelectedItem)).Item1;
             var metadata = GetMetaData(name, platform);
-
-            pbBanner.Image = metadata.Banner;
-            txtReleaseDate.Text = metadata.ReleaseDate;
-            txtGenre.Text = metadata.Genre;
-            txtDeveloper.Text = metadata.Developer;
-            txtPublisher.Text = metadata.Publisher;
-            nudRating.Value = (decimal) metadata.Rating;
-            txtOverview.Text = metadata.Overview;
+            if (metadata != null) {
+                pbBanner.Image = metadata.Banner;
+                txtReleaseDate.Text = metadata.ReleaseDate;
+                txtGenre.Text = metadata.Genre;
+                txtDeveloper.Text = metadata.Developer;
+                txtPublisher.Text = metadata.Publisher;
+                nudRating.Value = (decimal) metadata.Rating;
+                txtOverview.Text = metadata.Overview;
+            }
         }
 
         private GameMetaData GetMetaData(string name, string platform) {
 
-            var apiPath = new Uri("http://thegamesdb.net/api/GetGame.php?name=" + name);
+            var apiPath = new Uri("http://thegamesdb.net/api/GetGame.php?name=" + name + "&platform=" + platform);
             using (var wc = new WebClient()) {
                 var data = wc.DownloadString(apiPath);
 
@@ -167,17 +168,17 @@ namespace RetroConsole {
                 pbBanner.Image.Save(ms, ImageFormat.Png);
 
                 db.Games.InsertOnSubmit(new Game() {
-                                                       Banner = ms.ToArray(),
-                                                       Developer = db.PubDevs.First(d=>d.Name==txtDeveloper.Text),
-                                                       Publisher = db.PubDevs.First(d => d.Name == txtPublisher.Text),
-                                                       Genre = db.Genres.First(g=>g.Name == txtGenre.Text),
-                                                       Name = txtName.Text,
-                                                       Overview = txtOverview.Text,
-                                                       PlatformID = ((Tuple<string, string, int>)cbPlatform.SelectedItem).Item3,
-                                                       Rating = (double?) nudRating.Value,
-                                                       ReleaseDate = Convert.ToDateTime(txtReleaseDate.Text),
-                                                       RomPath = txtRomPath.Text
-                                                   });
+                    Banner = ms.ToArray(),
+                    Developer = db.PubDevs.First(d=>d.Name==txtDeveloper.Text),
+                    Publisher = db.PubDevs.First(d => d.Name == txtPublisher.Text),
+                    Genre = db.Genres.First(g=>g.Name == txtGenre.Text),
+                    Name = txtName.Text,
+                    Overview = txtOverview.Text,
+                    PlatformID = ((Tuple<string, string, int>)cbPlatform.SelectedItem).Item3,
+                    Rating = (double?) nudRating.Value,
+                    ReleaseDate = Convert.ToDateTime(txtReleaseDate.Text),
+                    RomPath = txtRomPath.Text
+                });
                 db.SubmitChanges();
 
             }
