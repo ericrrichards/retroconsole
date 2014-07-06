@@ -174,6 +174,7 @@
     <None Include="Publish\Application Files\RetroConsole_1_0_0_10\RetroConsole.exe.deploy" />
     <None Include="Publish\Application Files\RetroConsole_1_0_0_10\RetroConsole.exe.manifest" />
     <None Include="Publish\RetroConsole.application" />
+    <None Include="Publish\RetroConsole.zip" />
     <None Include="Roms\Chrono Trigger.smc" />
     <None Include="Roms\Mortal Kombat 2.bin" />
     <None Include="Roms\Pokemon - Fire Red.GBA" />
