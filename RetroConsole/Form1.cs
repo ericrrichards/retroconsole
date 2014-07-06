@@ -2,12 +2,15 @@
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Security.Cryptography;
 using System.Windows.Forms;
 
 namespace RetroConsole {
     public partial class Form1 : Form {
         public Form1() {
             InitializeComponent();
+
+            menuStrip1.Renderer = new MyRenderer();
 
             if (!Directory.Exists("Roms")) {
                 Directory.CreateDirectory("Roms");
@@ -20,6 +23,52 @@ namespace RetroConsole {
 
 
             GetGameList();
+        }
+
+        public class MyRenderer : ToolStripProfessionalRenderer {
+            public MyRenderer() : base(new MyColors()) {
+            }
+
+
+            public class MyColors : ProfessionalColorTable {
+                public override Color MenuItemSelected {
+                    get { return Color.Blue; }
+                }
+
+                public override Color MenuItemSelectedGradientBegin {
+                    get { return Color.Blue; }
+                }
+                public override Color MenuItemSelectedGradientEnd {
+                    get { return Color.Blue; }
+                }
+
+                public override Color MenuStripGradientBegin {
+                    get { return Color.Gray; }
+                }
+
+                public override Color MenuStripGradientEnd {
+                    get { return Color.Gray; }
+                }
+
+                public override Color MenuItemBorder {
+                    get { return Color.Gray; }
+                }
+
+                public override Color MenuBorder {
+                    get { return Color.Gray; }
+                }
+
+                public override Color MenuItemPressedGradientBegin {
+                    get { return Color.Blue; }
+                }
+                public override Color MenuItemPressedGradientEnd {
+                    get { return Color.Blue; }
+                }
+
+                public override Color MenuItemPressedGradientMiddle {
+                    get { return Color.Blue; }
+                }
+            }
         }
 
         private void SetupGenesisEmulator() {
