@@ -1,5 +1,5 @@
 ﻿namespace RetroConsole {
-    partial class frmAddGame {
+    partial class FrmAddGame {
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -315,7 +315,7 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "frmAddGame";
+            this.Name = "FrmAddGame";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Add Game";
             ((System.ComponentModel.ISupportInitialize)(this.pbBanner)).EndInit();

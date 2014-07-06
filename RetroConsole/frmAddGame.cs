@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -9,15 +8,13 @@ using System.Windows.Forms;
 using System.Xml.Linq;
 
 namespace RetroConsole {
-    public partial class frmAddGame : Form {
-        public frmAddGame() {
+    public partial class FrmAddGame : Form {
+        public FrmAddGame() {
             InitializeComponent();
-            var filter = "";
-            using (var db = new GameDBDataContext()) {
-                foreach (var platform in db.Platforms) {
-                    cbPlatform.Items.Add(new Tuple<string, string, int>(platform.Name, platform.Name + "|" + platform.Filter, platform.Id));
-                }
+            foreach (var platform in GameDB.Instance.Platforms) {
+                cbPlatform.Items.Add(new Tuple<string, string, int>(platform.Name, platform.Name + "|" + platform.Filter, platform.ID));
             }
+
             ofdAddGame.InitialDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Roms");
         }
 
@@ -28,6 +25,14 @@ namespace RetroConsole {
             var selectedPlatform = (Tuple<string, string, int>)cbPlatform.SelectedItem;
             ofdAddGame.Filter = selectedPlatform.Item2;
             if (ofdAddGame.ShowDialog() == DialogResult.OK) {
+                var path = Path.GetDirectoryName(ofdAddGame.FileName);
+                if (path != Path.Combine(Directory.GetCurrentDirectory(), "Roms")) {
+                    var filename = Path.GetFileName(ofdAddGame.FileName);
+                    var newPath = Path.Combine(Directory.GetCurrentDirectory(), "Roms", filename);
+                    File.Copy(ofdAddGame.FileName, newPath);
+                    ofdAddGame.FileName = newPath;
+                }
+
                 txtRomPath.Text = ofdAddGame.FileName;
 
                 txtName.Text = Path.GetFileNameWithoutExtension(ofdAddGame.FileName);
@@ -53,7 +58,7 @@ namespace RetroConsole {
                 txtGenre.Text = metadata.Genre;
                 txtDeveloper.Text = metadata.Developer;
                 txtPublisher.Text = metadata.Publisher;
-                nudRating.Value = (decimal) metadata.Rating;
+                nudRating.Value = (decimal)metadata.Rating;
                 txtOverview.Text = metadata.Overview;
             }
         }
@@ -106,10 +111,9 @@ namespace RetroConsole {
         private GameMetaData ExtractMetadata(string xml) {
             var doc = XDocument.Parse(xml);
 
-            var baseUrl = doc.Descendants("baseImgUrl").FirstOrDefault().Value;
+            var baseUrl = doc.Descendants("baseImgUrl").First().Value;
             var game = doc.Descendants("Game").First();
-            var data = new GameMetaData();
-            data.Name = game.Descendants("GameTitle").First().Value;
+            var data = new GameMetaData {Name = game.Descendants("GameTitle").First().Value};
 
             var releaseElem = game.Descendants("ReleaseDate").FirstOrDefault();
             if (releaseElem != null) data.ReleaseDate = releaseElem.Value;
@@ -149,39 +153,20 @@ namespace RetroConsole {
         }
 
         private void btnSave_Click(object sender, EventArgs e) {
-            using (var db = new GameDBDataContext()) {
-                if (!db.Genres.Any(g => g.Name == txtGenre.Text)) {
-                    db.Genres.InsertOnSubmit(new Genre(){Name = txtGenre.Text});
-                    db.SubmitChanges();
-                }
-                
-                if (!db.PubDevs.Any(p => p.Name == txtDeveloper.Text)) {
-                    db.PubDevs.InsertOnSubmit(new PubDev(){Name = txtDeveloper.Text});
-                    db.SubmitChanges();
-                }
-                if (!db.PubDevs.Any(p => p.Name == txtPublisher.Text)) {
-                    db.PubDevs.InsertOnSubmit(new PubDev() { Name = txtPublisher.Text });
-                    db.SubmitChanges();
-                }
-
-                var ms = new MemoryStream();
-                pbBanner.Image.Save(ms, ImageFormat.Png);
-
-                db.Games.InsertOnSubmit(new Game() {
-                    Banner = ms.ToArray(),
-                    Developer = db.PubDevs.First(d=>d.Name==txtDeveloper.Text),
-                    Publisher = db.PubDevs.First(d => d.Name == txtPublisher.Text),
-                    Genre = db.Genres.First(g=>g.Name == txtGenre.Text),
+                var g = new Game {
+                    Banner = pbBanner.Image,
+                    Developer = txtDeveloper.Text,
+                    Publisher = txtPublisher.Text,
+                    Genre = txtGenre.Text,
                     Name = txtName.Text,
                     Overview = txtOverview.Text,
-                    PlatformID = ((Tuple<string, string, int>)cbPlatform.SelectedItem).Item3,
-                    Rating = (double?) nudRating.Value,
-                    ReleaseDate = Convert.ToDateTime(txtReleaseDate.Text),
-                    RomPath = txtRomPath.Text
-                });
-                db.SubmitChanges();
-
-            }
+                    Platform = GameDB.Instance.Platforms.First(p=>p.ID == ((Tuple<string, string, int>)cbPlatform.SelectedItem).Item3),
+                    Rating = nudRating.Value,
+                    ReleaseDate = txtReleaseDate.Text,
+                    RomPath = txtRomPath.Text,
+                };
+                pbBanner.Image.Save(g.BannerPath);
+                GameDB.Instance.AddGame(g);
 
         }
     }
