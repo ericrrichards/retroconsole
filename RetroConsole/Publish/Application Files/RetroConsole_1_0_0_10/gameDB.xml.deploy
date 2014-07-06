@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<DB>
+  <Platforms>
+    <Platform>
+      <ID>0</ID>
+      <Name>Sega Genesis</Name>
+      <Filter>*.bin;*.smd</Filter>
+      <EmulatorPath>Emulators/genesis/Fusion.exe</EmulatorPath>
+    </Platform>
+    <Platform>
+      <ID>1</ID>
+      <Name>Super Nintendo (SNES)</Name>
+      <Filter>*.smc</Filter>
+      <EmulatorPath>Emulators/snes/snes9x.exe</EmulatorPath>
+    </Platform>
+    <Platform>
+      <ID>2</ID>
+      <Name>Nintendo Game Boy</Name>
+      <Filter>*.gb</Filter>
+      <EmulatorPath>Emulators/gba/VisualBoyAdvance-M.exe</EmulatorPath>
+    </Platform>
+    <Platform>
+      <ID>3</ID>
+      <Name>Nintendo Game Boy Advance</Name>
+      <Filter>*.gba</Filter>
+      <EmulatorPath>Emulators/gba/VisualBoyAdvance-M.exe</EmulatorPath>
+    </Platform>
+    <Platform>
+      <ID>4</ID>
+      <Name>Nintendo Game Boy Color</Name>
+      <Filter>*.gbc</Filter>
+      <EmulatorPath>Emulators/gba/VisualBoyAdvance-M.exe</EmulatorPath>
+    </Platform>
+  </Platforms>
+  
+</DB>

@@ -12,7 +12,7 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>C:\Users\Eric\Documents\Visual Studio 2012\Projects\RetroConsole\Publish\</PublishUrl>
+    <PublishUrl>C:\Users\Eric\Documents\Visual Studio 2012\Projects\RetroConsole\RetroConsole\Publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -25,7 +25,7 @@
     <TargetCulture>en</TargetCulture>
     <ProductName>RetroConsole</ProductName>
     <PublisherName>Eric Richards</PublisherName>
-    <ApplicationRevision>10</ApplicationRevision>
+    <ApplicationRevision>11</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
@@ -117,6 +117,7 @@
     <Content Include="icon_64.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Publish\setup.exe" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -155,6 +156,24 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="Publish\Application Files\RetroConsole_1_0_0_10\Emulators\gba\vbam.ini.deploy" />
+    <None Include="Publish\Application Files\RetroConsole_1_0_0_10\Emulators\gba\VisualBoyAdvance-M.exe.deploy" />
+    <None Include="Publish\Application Files\RetroConsole_1_0_0_10\Emulators\genesis\Fusion.exe.deploy" />
+    <None Include="Publish\Application Files\RetroConsole_1_0_0_10\Emulators\genesis\Fusion.ini.deploy" />
+    <None Include="Publish\Application Files\RetroConsole_1_0_0_10\Emulators\genesis\Video Codec\KegaGameVideo.inf.deploy" />
+    <None Include="Publish\Application Files\RetroConsole_1_0_0_10\Emulators\genesis\Video Codec\KGV1-VFW.dll.deploy" />
+    <None Include="Publish\Application Files\RetroConsole_1_0_0_10\Emulators\snes\fmodex.dll.deploy" />
+    <None Include="Publish\Application Files\RetroConsole_1_0_0_10\Emulators\snes\snes9x.conf.deploy" />
+    <None Include="Publish\Application Files\RetroConsole_1_0_0_10\Emulators\snes\snes9x.exe.deploy" />
+    <None Include="Publish\Application Files\RetroConsole_1_0_0_10\gameDB.xml.deploy" />
+    <None Include="Publish\Application Files\RetroConsole_1_0_0_10\icon_32.png.deploy" />
+    <None Include="Publish\Application Files\RetroConsole_1_0_0_10\icon_64.ico.deploy" />
+    <None Include="Publish\Application Files\RetroConsole_1_0_0_10\icon_64.png.deploy" />
+    <None Include="Publish\Application Files\RetroConsole_1_0_0_10\RetroConsole.application" />
+    <None Include="Publish\Application Files\RetroConsole_1_0_0_10\RetroConsole.exe.config.deploy" />
+    <None Include="Publish\Application Files\RetroConsole_1_0_0_10\RetroConsole.exe.deploy" />
+    <None Include="Publish\Application Files\RetroConsole_1_0_0_10\RetroConsole.exe.manifest" />
+    <None Include="Publish\RetroConsole.application" />
     <None Include="Roms\Chrono Trigger.smc" />
     <None Include="Roms\Mortal Kombat 2.bin" />
     <None Include="Roms\Pokemon - Fire Red.GBA" />
