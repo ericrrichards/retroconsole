@@ -283,7 +283,7 @@
             this.ofdSelectBannerImg.FileName = "Images|*.jpg;*.jpeg;*.png;*.bmp;*.gif";
             this.ofdSelectBannerImg.Title = "Select Banner Image";
             // 
-            // frmAddGame
+            // FrmAddGame
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -316,6 +316,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FrmAddGame";
+            this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Add Game";
             ((System.ComponentModel.ISupportInitialize)(this.pbBanner)).EndInit();
